@@ -1,6 +1,7 @@
 package com.evgeni.auth.filter;
 
 import com.evgeni.auth.model.vo.JwtPrincipal;
+import com.evgeni.auth.security.token.TokenUtils;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureException;
@@ -18,12 +19,11 @@ import java.io.IOException;
  * Created by evgeni on 8/3/2016.
  */
 public class JwtFilter extends GenericFilterBean {
-    private static final String AUTH_HEADER = "Authorization";
-    public static final String SECRET_KEY = "secretkey";
+
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         final HttpServletRequest request = (HttpServletRequest) servletRequest;
-        final String authHeader = request.getHeader(AUTH_HEADER);
+        final String authHeader = request.getHeader(TokenUtils.AUTH_HEADER);
 
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
             ((HttpServletResponse)servletResponse)
@@ -31,14 +31,8 @@ public class JwtFilter extends GenericFilterBean {
             return;
         }
 
-        final String token = authHeader.substring(7); // The part after "Bearer ";
-
         try {
-            final Claims claims = Jwts.parser().setSigningKey(SECRET_KEY)
-                    .parseClaimsJws(token).getBody();
-            JwtPrincipal principal = new JwtPrincipal();
-            principal.setClaims(claims);
-            principal.setUsername("get from token");
+            JwtPrincipal principal = TokenUtils.parseToken(authHeader);
             request.setAttribute("jwtPrincipal", principal);
         }
         catch (final SignatureException e) {
