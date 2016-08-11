@@ -1,5 +1,6 @@
 package com.evgeni.auth.controller;
 
+import com.evgeni.auth.exception.InvalidLoginException;
 import com.evgeni.auth.model.vo.UserLoginVO;
 import com.evgeni.auth.model.vo.UserTokenVO;
 import com.evgeni.auth.security.token.TokenUtils;
@@ -25,6 +26,6 @@ public class UserController {
             tokenVO.setToken(token);
             return tokenVO;
         }
-        throw new RuntimeException(new ServletException("invalid login"));
+        throw new InvalidLoginException(new ServletException("invalid login"));
     }
 }
