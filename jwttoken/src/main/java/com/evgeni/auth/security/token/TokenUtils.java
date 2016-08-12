@@ -16,6 +16,8 @@ public abstract class TokenUtils {
     public static final String AUTH_HEADER = "Authorization";
     public static final String SECRET_KEY = "secretkey";
 
+    private TokenUtils(){}
+
     public static JwtPrincipal parseToken(final String authHeader){
         final String token = authHeader.substring(7); // The part after "Bearer ";
 
