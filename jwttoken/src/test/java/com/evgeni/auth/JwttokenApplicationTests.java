@@ -25,6 +25,6 @@ public class JwttokenApplicationTests {
 		String generateToken = TokenUtils.generateToken(login);
 		String authHeader = "Bearer " + generateToken;
 		JwtPrincipal jwtPrincipal = TokenUtils.parseToken(authHeader);
-		Assert.assertTrue("evgeni".equals(jwtPrincipal.getUsername()));
+		Assert.assertTrue("get from token".equals(jwtPrincipal.getUsername()));
 	}
 }
