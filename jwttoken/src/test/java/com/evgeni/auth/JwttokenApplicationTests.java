@@ -23,7 +23,8 @@ public class JwttokenApplicationTests {
 		login.setUsername("evgeni");
 		login.setPassword("pass");
 		String generateToken = TokenUtils.generateToken(login);
-		JwtPrincipal jwtPrincipal = TokenUtils.parseToken(generateToken);
+		String authHeader = "Bearer " + generateToken;
+		JwtPrincipal jwtPrincipal = TokenUtils.parseToken(authHeader);
 		Assert.assertTrue("evgeni".equals(jwtPrincipal.getUsername()));
 	}
 }
